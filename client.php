@@ -1,5 +1,6 @@
 <?php
 header('Content-Type: text/plain;'); //Мы будем выводить простой текст
+header('charset=utf-8'); //Мы будем выводить простой текст
 set_time_limit(0); //Скрипт должен работать постоянно
 ob_implicit_flush(); //Все echo должны сразу же выводиться
 $address = 'localhost'; //Адрес работы сервера
@@ -23,8 +24,9 @@ do {
     sleep(1);
     $out = socket_read($socket, 1024); //Читаем сообщение от сервера
     echo "Сообщение от сервера: $out.\n";
-    $msg = 'Accepted';
-    socket_write($socket, $msg, strlen($msg)); //Отправляем серверу сообщение
+    $msg = 'Принято';
+    echo (mb_strlen($msg,'cp1251'));
+    socket_write($socket, $msg,  mb_strlen($msg,'cp1251')); //Отправляем серверу сообщение
 } while(true);
 
 

@@ -1,5 +1,6 @@
 <?php
 header('Content-Type: text/plain;'); //Мы будем выводить простой текст
+header('charset=utf-8'); //Мы будем выводить простой текст
 set_time_limit(0); //Скрипт должен работать постоянно
 ob_implicit_flush(); //Все echo должны сразу же отправляться клиенту
 $address = 'localhost'; //Адрес работы сервера
@@ -32,8 +33,8 @@ do {
         echo "Сокет готов к приёму сообщений\n";
     }
     sleep(2);
-    $msg = 'Hi'; //Сообщение клиенту
-    socket_write($msgsock, $msg, strlen($msg)); //Запись в сокет
+    $msg = 'Привет'; //Сообщение клиенту
+    socket_write($msgsock, $msg,  mb_strlen($msg,'cp1251')); //Запись в сокет
     //Бесконечный цикл ожидания клиентов
     do {
         if (false === ($buf = socket_read($msgsock, 1024))) {
@@ -49,11 +50,12 @@ do {
             echo "Сообщение от сервера: передана не строка\n";
         }
 
-        if ($buf === 'Accepted') {
+        if ($buf === 'Принято') {
             echo sprintf("Сообщение %s принято клиентом\n", $msg);
         }
+
         $msg = mt_rand(1, 10000);
-        socket_write($msgsock, $msg, strlen($msg));
+        socket_write($msgsock, $msg, mb_strlen($msg,'cp1251'));
 
     } while (true);
 } while (true);
